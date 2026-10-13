@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Kalkulator BMI dengan Camunda</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 50px; background-color: #f0f2f5;}
+        .card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); max-width: 450px; margin: 0 auto;}
+        h2 { text-align: center; color: #333; margin-top: 0;}
+        .form-group { margin-bottom: 15px; }
+        label { font-weight: bold; color: #555; display: block; margin-bottom: 5px;}
+        input[type="number"] { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 16px;}
+        button { background-color: #007bff; color: white; padding: 12px 15px; border: none; border-radius: 6px; cursor: pointer; width: 100%; font-size: 16px; font-weight: bold; margin-top: 10px;}
+        button:hover { background-color: #0056b3; }
+        
+        .result-box { margin-top: 25px; padding: 20px; background: #e8f5e9; border-radius: 8px; border: 1px solid #c8e6c9; text-align: center;}
+        .bmi-value { font-size: 36px; font-weight: bold; color: #2e7d32; margin: 10px 0;}
+        .bmi-category { font-size: 20px; font-weight: bold; color: #1565c0; margin-bottom: 15px;}
+        .process-info { font-size: 12px; color: #666; font-family: monospace;}
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Hitung BMI Anda</h2>
+        
+        <form action="/api/proses-bmi" method="POST">
+            <div class="form-group">
+                <label for="berat">Berat Badan (kg):</label>
+                <input type="number" id="berat" name="berat" step="0.1" placeholder="Misal: 70" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="tinggi">Tinggi Badan (m):</label>
+                <input type="number" id="tinggi" name="tinggi" step="0.01" placeholder="Misal: 1.75" required>
+            </div>
+            
+            <button type="submit">Hitung dengan BPMN Camunda</button>
+        </form>
+
+        <div th:if="${nilaiBmi != null}" class="result-box">
+            <h3 style="margin-top: 0; color: #333;">Hasil Evaluasi:</h3>
+            
+            <div class="bmi-value" th:text="${nilaiBmi}">24.00</div>
+            
+            <div class="bmi-category" th:text="${kategoriBmi}">Normal</div>
+            
+            <div class="process-info" th:text="'Camunda Process ID: ' + ${processId}"></div>
+        </div>
+    </div>
+</body>
+</html>
